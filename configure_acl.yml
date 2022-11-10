@@ -1,0 +1,17 @@
+---
+- name: Configure an ACL
+  hosts: all
+  gather_facts: false
+  vars:
+    ansible_connection: ansible.netcommon.network_cli
+    ansible_network_os: ios
+    ansible_user: cisco
+    ansible_password: cisco
+  tasks:
+    - name: Load new acl into device
+      cisco.ios.ios_config:
+        lines:
+          - permit ip 192.168.1.0 0.0.0.255 any log
+        parents: ip access-list extended test
+        before: no ip access-list extended test
+        match: exact
